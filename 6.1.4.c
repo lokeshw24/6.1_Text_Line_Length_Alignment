@@ -22,6 +22,8 @@ int main(){
 	char broken_word[ALIGNMENT_LENGTH];
 	int i=0 , j;
 	 
+	FILE *new_fp=fopen("formatted_output_file.c" ,"w" );
+
 	while(1){
 		for( ; i<t && ( *(aligned_line+i)=(char)fgetc(fp) ) != EOF ; i++ );
 
@@ -52,7 +54,9 @@ int main(){
 			--i;
 		}
 
-		printf("%s$$\n", aligned_line);
+		fprintf( new_fp , aligned_line );
+
+		//printf("%s$$\n", aligned_line, i , EOF_flag );
 
 		/*now fill the aligned_line, by broken_word, but in reverse order */
 		int k=0;
@@ -64,6 +68,9 @@ int main(){
 		i=k;
 
 	}
+
+	fclose(fp);
+	fclose(new_fp);
 
 return 0;
 
