@@ -21,11 +21,31 @@ int main(){
 	char aligned_line[t];
 	char broken_word[ALIGNMENT_LENGTH];
 	int i=0 , j;
+
+	/* Code to find the no_of_lines ------------
+	 *
+	int no_of_lines=system("wc -l temp.c | awk '{ print $1 }' ") ;
+	no_of_lines=no_of_lines/2;
+
+	if( no_of_lines < 23 ) printf("sldfj ");
 	 
+	printf("%d \n", no_of_lines );
+	return 0;
+	*/
+
+	int no_of_characters=1175;
+	no_of_characters/=2;
+	printf("%d \n", no_of_characters);
+
 	FILE *new_fp=fopen("formatted_output_file.c" ,"w" );
 
 	while(1){
-		for( ; i<t && ( *(aligned_line+i)=(char)fgetc(fp) ) != EOF ; i++ );
+		for( ; i<t && no_of_characters && ( *(aligned_line+i)=(char)fgetc(fp) ) != EOF ; i++ , --no_of_characters );
+			/*if( *(aligned_line+i)=='\n' ) {
+				*(aligned_line+i)=(char)fgetc(fp);
+			}
+			*/
+		printf("%d \n", no_of_characters );
 
 		char *temp=aligned_line+(i-1);
 		/*basically, we are supposed to put '\0' at temp,
@@ -33,10 +53,10 @@ int main(){
 		 * or something like that.
 		 *
 		 */
-		if( *(temp+1)==EOF ){
+		if( *(temp+1)==EOF || no_of_characters<1 ){
 			*(temp+1)='\0';
-			printf("%s", aligned_line );
-
+			fprintf( new_fp , "%s\n", aligned_line );
+			printf("*** \n");
 			break ;
 		}
 
@@ -54,7 +74,7 @@ int main(){
 			--i;
 		}
 
-		fprintf( new_fp , aligned_line );
+		fprintf( new_fp , "%s\n", aligned_line );
 
 		//printf("%s$$\n", aligned_line, i , EOF_flag );
 
