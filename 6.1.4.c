@@ -1,8 +1,24 @@
 /*WHAT PROG DOES :
- * 	Takes input file, and breaks it into lines of fixed length & outputs those lines.
+ * 	Takes input file, and breaks it into lines of fixed length & outputs those lines in a file.
  * 	The length of each printed line is < the fixed length.If any line ends in the middle of
  * 	some word, then that entire word is printed in next line & the current line is printed
  * 	with less characters.
+ * 	
+ * 	Here I was trying to create an output file in IEEE format, ie 2 cols in a file.
+ *
+ * CURRENT STATUS : 
+ * 	I m leaving in between, so the code is not working.
+ *
+ * NOTES :
+ * 	>While writing the 1s col in file, Im putting '\n' at the end of every line. So what I thought was, after
+ * 	writing the 1st col, I will reopen the file, & use fseek() to reach the 2nd col position & then start writing.
+ *
+ * 	>I think this is "impossible" coz while writing the 1st col, I put '\n' at the end, which I think is end-of-line.
+ * 	So there is nothing beyond that( although the "editor" makes u feel that there is "some" space left !! )
+ * 	Hence I cannot "create" 2nd col.
+ *
+ * 	>Also, after writing the 1st col, I close the file & reopen it with new_file_pointer. NOW, in which "mode" should 
+ * 	I re-open ??
  *
  */
 
@@ -34,6 +50,7 @@ int main(){
 	return 0;
 	*/
 
+	/*Right now, hard-coded */
 	int no_of_characters=1175;
 	no_of_characters/=2;
 	printf("%d \n", no_of_characters);
@@ -100,6 +117,8 @@ int main(){
 
 	}
 
+	//return 0;
+
 
 	/*now half of file is being written as 1st column, so 2nd column will be written using fseek() 
 	 */
@@ -109,7 +128,7 @@ int main(){
 
 	int sec_col_offset=ALIGNMENT_LENGTH + GAP;
 
-	while(1){
+	//while(1){
 		for( ; i<t && ( *(aligned_line+i)=(char)fgetc(fp) ) != EOF ; i++ );
 
 		char *temp=aligned_line+(i-1);
@@ -124,7 +143,7 @@ int main(){
 			fprintf( new_fp , "%s\n", aligned_line );
 			fclose(new_fp);
 			printf("*** \n");
-			break ;
+			//break ;
 
 		}
 
@@ -144,7 +163,7 @@ int main(){
 
 		fseek(new_fp , sec_col_offset , SEEK_CUR );
 		fprintf( new_fp , "%s\n", aligned_line );
-		//printf("%s$$\n", aligned_line);
+		printf("%s$$\n", aligned_line);
 
 		/*now fill the aligned_line, by broken_word, but in reverse order */
 		int k=0;
@@ -155,7 +174,7 @@ int main(){
 		}
 		i=k;
 
-	}
+//	}
 
 	fclose(new_fp);
 	fclose(fp);
